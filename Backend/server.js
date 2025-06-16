@@ -23,7 +23,7 @@ const io = new SocketServer(httpServer, {
 import cors from "cors";
 
 app.use(cors({
-  origin: "http://localhost:5173",   // allow your frontend origin
+  origin: "https://erp-eta-pink.vercel.app",   // allow your frontend origin
   credentials: true                  // if using cookies or headers like Authorization
 }));
 
