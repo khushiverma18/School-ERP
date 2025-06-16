@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_BASE_URL =
   process.env.NODE_ENV === 'development'
-    ? 'http://localhost:5000/api'
+    ? 'https://erp-at85.onrender.com/api'
     : '/api';
 
 const api = axios.create({
