@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/index";
 import { Navigate } from 'react-router-dom';
-import NotFound from "./pages/NotFound";
+import NotFound from "./pages/notfound";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminAttendance from "./components/admin/adimadd/Adminattendance";
 import AdminStudents from "./components/admin/adimadd/Adminstudent";
