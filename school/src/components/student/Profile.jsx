@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
 import { User, Mail, Phone, MapPin, Calendar, Download, Edit, GraduationCap, Heart, Users } from "lucide-react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 export function StudentProfile({ isOpen, toggleSidebar }) {
