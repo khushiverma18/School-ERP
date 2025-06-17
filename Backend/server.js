@@ -22,10 +22,12 @@ const io = new SocketServer(httpServer, {
 });
 import cors from "cors";
 
-app.use(cors({
-  origin: "https://erp-eta-pink.vercel.app",   // allow your frontend origin
-  credentials: true                  // if using cookies or headers like Authorization
-}));
+const corsOptions = {
+  origin: ["https://erp-eta-pink.vercel.app", "http://localhost:5173/"],
+  credentials: true, // if using cookies or headers like Authorization
+};
+
+app.use(cors(corsOptions));
 
 
 app.use(express.json());
