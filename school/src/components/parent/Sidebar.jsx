@@ -1,5 +1,6 @@
 import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+
 import { 
   Home, User, Calendar, BookOpen, GraduationCap, MessageSquare, 
   CreditCard, FileText, Download, Settings, LogOut, GraduationCap as LogoIcon, 
@@ -8,6 +9,12 @@ import {
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const location = useLocation();
+const navigate = useNavigate();
+   
+const logout = () => {
+  localStorage.removeItem('user');
+  navigate('/');
+};
 
   const navigation = [
     { name: 'Dashboard', href: '/parent', icon: Home },
@@ -17,6 +24,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { name: 'Homework', href: '/parent/homework', icon: BookOpen },
     { name: 'Study Materials', href: '/parent/materials', icon: Download },
     { name: 'Communication', href: '/parent/communication', icon: MessageSquare },
+    { name: 'Deliver', href: '/parent/deliver', icon: FileText },
     { name: 'Fee Payment', href: '/parent/fees', icon: CreditCard },
     { name: 'Reports', href: '/parent/reports', icon: FileText },
   ];
@@ -72,12 +80,13 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           {isOpen && <span>Settings</span>}
         </NavLink>
 
-        <button
-          className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-slate-300 hover:text-red-400 hover:bg-red-500/10"
-        >
-          <LogOut className="h-5 w-5 text-slate-400 group-hover:text-red-400" />
-          {isOpen && <span>Logout</span>}
-        </button>
+         <button
+      onClick={logout}
+      className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-slate-300 hover:text-red-400 hover:bg-red-500/10"
+    >
+      <LogOut className="h-5 w-5 text-slate-400 group-hover:text-red-400" />
+      <span>Logout</span>
+    </button>
       </div>
     </div>
   );

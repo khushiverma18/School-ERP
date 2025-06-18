@@ -60,6 +60,7 @@ import Communications from "./components/teacher/Communication";
 import TeacherSettings from "./components/teacher/Setting";
 import { SocketProvider } from './context/SocketContext';
 import {AuthProvider} from './context/AuthContext';
+import UniformDeliveryModule from "./components/parent/Deliver";
 
 
 
@@ -132,10 +133,12 @@ const App = () => (
             <Route path="homework" element={<Homework />} />
             <Route path="materials" element={<StudyMaterials />} />
             <Route path="communication" element={<Communication />} />
+            <Route path="deliver" element={<UniformDeliveryModule/>} />
             <Route path="fees" element={<FeePayment />} />
             <Route path="reports" element={<Reports />} />
             <Route path="settings" element={<Settings />} />
           </Route>
+
 
 
           <Route path="/Teacher" element={<TeacherDashboard />}>

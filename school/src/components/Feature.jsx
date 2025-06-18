@@ -1,90 +1,172 @@
+import React, { useState, useRef } from "react";
 import { BarChart3, Bot, Users, Zap, Puzzle } from "lucide-react";
+import { motion } from "framer-motion";
 
 const features = [
   {
     icon: BarChart3,
-    title: "Real-time academic insights",
-    description: "Get instant visibility into student performance and institutional metrics",
+    title: "Real-time Insights",
+    description: "Get instant visibility into student performance and institutional metrics.",
+    color: "#38bdf8", // Sky
   },
   {
     icon: Bot,
-    title: "Automated reporting & analytics",
-    description: "AI-powered reports that generate themselves, saving hours of manual work",
+    title: "AI Automation",
+    description: "AI-powered reports that generate themselves, saving hours of manual work.",
+    color: "#a78bfa", // Violet
   },
   {
     icon: Users,
-    title: "Mentorship & skill development",
-    description: "Track and nurture student growth beyond traditional academic metrics",
+    title: "Skill Development",
+    description: "Track and nurture student growth beyond traditional academic metrics.",
+    color: "#4ade80", // Green
   },
   {
     icon: Zap,
-    title: "Instant communication & updates",
-    description: "Keep your entire school community connected and informed in real-time",
+    title: "Instant Updates",
+    description: "Keep your entire school community connected and informed in real-time.",
+    color: "#facc15", // Yellow
   },
   {
     icon: Puzzle,
-    title: "Custom modules for your unique needs",
-    description: "Adapt the platform to fit your institution's specific requirements",
+    title: "Custom Modules",
+    description: "Adapt the platform to fit your institution's specific requirements.",
+    color: "#f472b6", // Pink
+  },
+  {
+    icon: Users,
+    title: "Community Engagement",
+    description: "Foster a collaborative environment between students, teachers, and parents.",
+    color: "#fb923c", // Orange
   },
 ];
 
 const FeaturesSection = () => {
-  const radius = 250;
+  const gridRef = useRef(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [hoveredCard, setHoveredCard] = useState(null);
+
+  const handleMouseMove = (e) => {
+    if (gridRef.current) {
+      const rect = gridRef.current.getBoundingClientRect();
+      setMousePosition({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    }
+  };
+
+  const cardVariants = {
+    initial: {
+      opacity: 0,
+      scale: 0.9,
+      y: 30,
+    },
+    visible: (i) => ({
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    }),
+  };
+
+  const spotlightColor =
+    hoveredCard !== null ? `${features[hoveredCard].color}20` : "transparent";
 
   return (
-    <section className="py-24 bg-gradient-to-br from-white via-blue-50 to-purple-50 relative overflow-hidden">
-      {/* Background glows */}
-      <div className="absolute -top-32 -left-32 w-[400px] h-[400px] bg-blue-300 opacity-20 rounded-full filter blur-3xl z-0" />
-      <div className="absolute -bottom-32 -right-32 w-[400px] h-[400px] bg-purple-300 opacity-20 rounded-full filter blur-3xl z-0" />
+    <section className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white py-24 sm:py-32 relative overflow-hidden">
+      {/* Animated background blobs */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-20 w-72 h-72 bg-purple-500 opacity-20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-40 right-20 w-96 h-96 bg-blue-500 opacity-15 rounded-full blur-3xl animate-bounce" style={{ animationDuration: "3s" }} />
+        <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-pink-500 opacity-10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-1/2 right-1/4 w-64 h-64 bg-cyan-500 opacity-20 rounded-full blur-2xl animate-ping" style={{ animationDuration: "4s" }} />
+      </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        {/* Heading */}
-        <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            A Smarter Way to{" "}
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Run Your School
-            </span>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            An Ecosystem of Intelligence
           </h2>
-          <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            Pragyan AI helps your institution move beyond just managing tasks — it helps you lead with data-driven insights, intelligent automation, and personalized learning support.
+          <p className="text-lg text-slate-300 max-w-3xl mx-auto">
+            Our platform is more than a tool—it's a complete ecosystem designed to enhance every aspect of your institution.
           </p>
         </div>
 
-        {/* Circle Layout */}
-        <div className="relative w-[600px] h-[600px] mx-auto">
-          {/* Center text */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-            
-          </div>
+        <div
+          ref={gridRef}
+          onMouseMove={handleMouseMove}
+          className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          style={{ perspective: "1000px" }}
+        >
+          {/* Mouse-aware spotlight */}
+          <div
+            className="pointer-events-none absolute -inset-px transition-opacity duration-500"
+            style={{
+              opacity: hoveredCard !== null ? 1 : 0,
+              background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, ${spotlightColor}, transparent 40%)`,
+            }}
+          />
 
-          {/* Rotating Feature Cards */}
-          <div className="absolute inset-0 animate-spin-slow origin-center">
-            {features.map((feature, index) => {
-              const angle = (360 / features.length) * index;
-              const x = radius * Math.cos((angle * Math.PI) / 180);
-              const y = radius * Math.sin((angle * Math.PI) / 180);
-
-              return (
-                <div
-                  key={index}
-                  className="absolute w-64 p-7  shadow-xl rounded-xl border border-gray-100 text-center transition-all hover:scale-105 hover:shadow-2xl  duration-300 hover:-translate-y-2 border-0 shadow-lg bg-white p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-1xl"
-                  style={{
-                    transform: `translate(${x}px, ${y}px)`,
-                    left: "50%",
-                    top: "50%",
-                    translate: "-50% -50%",
-                  }}
-                >
-                  <div className="mb-3">
-                    <feature.icon className="h-8 w-8 text-blue-600 mx-auto" />
+          {features.map((feature, i) => (
+            <motion.div
+              key={feature.title}
+              custom={i}
+              variants={cardVariants}
+              initial="initial"
+              whileInView="visible"
+              viewport={{ once: true }}
+              onHoverStart={() => setHoveredCard(i)}
+              onHoverEnd={() => setHoveredCard(null)}
+              className="relative rounded-2xl p-px"
+              style={{
+                background: `rgba(255, 255, 255, ${hoveredCard === i ? 0.15 : 0.05})`,
+                transition: "background 0.3s ease",
+              }}
+            >
+              <motion.div
+                className="relative h-full p-6 bg-slate-900/80 backdrop-blur-md rounded-[15px] cursor-pointer"
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: `0 0 40px ${feature.color}40`,
+                  transition: { type: "spring", stiffness: 300, damping: 15 },
+                }}
+                style={{
+                  opacity: hoveredCard === null || hoveredCard === i ? 1 : 0.5,
+                  transition: "opacity 0.3s ease",
+                  transformStyle: "preserve-3d",
+                }}
+              >
+                <motion.div style={{ transform: "translateZ(20px)" }}>
+                  <div className="flex items-center gap-4 mb-4">
+                    <div
+                      className="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-lg"
+                      style={{
+                        background: `${feature.color}20`,
+                        color: feature.color,
+                        boxShadow: `inset 0 0 10px ${feature.color}40`,
+                      }}
+                    >
+                      <feature.icon className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-lg font-bold text-slate-100">{feature.title}</h3>
                   </div>
-                  <h3 className="font-semibold text-gray-800 mb-1 text-lg">{feature.title}</h3>
-                  <p className="text-sm text-gray-600">{feature.description}</p>
-                </div>
-              );
-            })}
-          </div>
+                  <motion.p
+                    className="text-slate-400 text-sm leading-relaxed"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: hoveredCard === i ? 1 : 0 }}
+                    transition={{ duration: 0.3, delay: 0.1 }}
+                  >
+                    {feature.description}
+                  </motion.p>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

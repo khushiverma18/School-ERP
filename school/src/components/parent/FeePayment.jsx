@@ -90,7 +90,7 @@ const FeePayment = () => {
       key: 'rzp_test_eThLGW3Me5FJvr',
       amount: selectedFee.amount * 100, // Amount in paise
       currency: 'USD',
-      name: 'EduManage Pro',
+      name: 'Pragyan AI',
       description: selectedFee.description,
       handler: function(response) {
         alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`);
@@ -306,7 +306,7 @@ const FeePayment = () => {
           <div className="bg-white rounded-xl p-8 max-w-md w-full mx-4">
             <div className="flex justify-between items-start mb-2">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">EduManage Pro</h2>
+                <h2 className="text-2xl font-bold text-gray-900">Pragyan AI</h2>
                 <p className="text-gray-600 mb-6">Price Summary ${selectedFee.amount}</p>
               </div>
               <button 

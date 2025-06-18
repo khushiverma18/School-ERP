@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate  } from 'react-router-dom';
 import { 
   Home, 
   User, 
@@ -21,7 +21,12 @@ import { href } from 'react-router-dom';
 
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
-  
+  const navigate = useNavigate(); 
+
+  const logout = () => {
+  localStorage.removeItem('user');
+  navigate('/');
+};
  
 
   const menuItems = [
@@ -89,12 +94,13 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           {isOpen && <span>Settings</span>}
         </NavLink>
 
-        <button
-          className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-slate-300 hover:text-red-400 hover:bg-red-500/10"
-        >
-          <LogOut className="h-5 w-5 text-slate-400 group-hover:text-red-400" />
-          {isOpen && <span>Logout</span>}
-        </button>
+         <button
+              onClick={logout}
+              className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-slate-300 hover:text-red-400 hover:bg-red-500/10"
+            >
+              <LogOut className="h-5 w-5 text-slate-400 group-hover:text-red-400" />
+              <span>Logout</span>
+            </button>
       </div>
     </div>
   );
