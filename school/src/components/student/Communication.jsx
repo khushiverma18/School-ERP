@@ -11,7 +11,6 @@ import {
   Avatar, AvatarFallback, AvatarImage
 } from "@/components/ui/avatar";
 
-
 import { 
   MessageSquare, Send, Phone, Video, 
   Bell, Calendar, Users, Mail, ChevronLeft, ChevronRight 
@@ -22,8 +21,8 @@ import { useAuth } from '../../context/AuthContext';
 export function StudentCommunication({ isOpen, toggleSidebar }) {
   const [newMessage, setNewMessage] = useState('');
   const [activeTab, setActiveTab] = useState('chat');
-  const { user: currentUser } = useAuth();
-  const {
+const { user: authUser } = useAuth();
+const currentUser = authUser || { role: 'guest', name: 'Guest' };  const {
     rooms,
     selectedRoom,
     setSelectedRoom,
@@ -76,11 +75,6 @@ export function StudentCommunication({ isOpen, toggleSidebar }) {
         </div>
       </div>
       
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {/* ... (same as before) */}
-      </div>
-
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3 mb-6">
           <TabsTrigger value="chat" className="flex items-center gap-2">
@@ -108,7 +102,7 @@ export function StudentCommunication({ isOpen, toggleSidebar }) {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {Array.isArray(rooms) && rooms.map((room) => (
+                {rooms.map((room) => (
                   <div
                     key={room._id}
                     onClick={() => setSelectedRoom(room)}
@@ -165,18 +159,18 @@ export function StudentCommunication({ isOpen, toggleSidebar }) {
                       {messages.map((message) => (
                         <div
                           key={message._id}
-                          className={`flex ${message.sender._id === currentUser._id ? 'justify-end' : 'justify-start'}`}
+                          className={`flex ${message.sender._id === currentUser.role ? 'justify-end' : 'justify-start'}`}
                         >
                           <div
                             className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                              message.sender._id === currentUser._id
+                              message.sender._id === currentUser.role
                                 ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white'
                                 : 'bg-gray-100 text-gray-800 border border-purple-200'
                             }`}
                           >
                             <p className="text-sm">{message.content}</p>
                             <p className={`text-xs mt-1 ${
-                              message.sender._id === currentUser._id ? 'text-purple-100' : 'text-gray-500'
+                              message.sender._id === currentUser.role ? 'text-purple-100' : 'text-gray-500'
                             }`}>
                               {new Date(message.createdAt).toLocaleTimeString([], { 
                                 hour: '2-digit', 

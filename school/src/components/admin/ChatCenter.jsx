@@ -5,8 +5,8 @@ import { useAuth } from '../../context/AuthContext';
 
 const ChatCenter = () => {
   const [message, setMessage] = useState('');
-  const { user: currentUser } = useAuth();
-  const {
+const { user: authUser } = useAuth();
+const currentUser = authUser || { role: 'guest', name: 'Guest' };  const {
     rooms,
     selectedRoom,
     setSelectedRoom,
@@ -48,7 +48,7 @@ const ChatCenter = () => {
             </div>
           </div>
           <div className="overflow-y-auto h-full">
-            {Array.isArray(rooms) && rooms.map((room) => (
+            {rooms.map((room) => (
               <div
                 key={room._id}
                 onClick={() => setSelectedRoom(room)}
@@ -88,15 +88,15 @@ const ChatCenter = () => {
                 {messages.map((message) => (
                   <div 
                     key={message._id} 
-                    className={`flex ${message.sender._id === currentUser._id ? 'justify-end' : 'justify-start'}`}
+                    className={`flex ${message.sender._id === currentUser.role ? 'justify-end' : 'justify-start'}`}
                   >
                     <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                      message.sender._id === currentUser._id
+                      message.sender._id === currentUser.role
                         ? 'bg-indigo-600 text-white'
                         : 'bg-gray-100 text-gray-900'
                     }`}>
                       <p className="text-sm">{message.content}</p>
-                      <p className={`text-xs mt-1 ${message.sender._id === currentUser._id ? 'text-indigo-200' : 'text-gray-500'}`}>
+                      <p className={`text-xs mt-1 ${message.sender._id === currentUser.role ? 'text-indigo-200' : 'text-gray-500'}`}>
                         {message.sender.name} • {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </p>
                     </div>

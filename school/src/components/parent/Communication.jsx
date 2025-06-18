@@ -17,8 +17,8 @@ import { useAuth } from '../../context/AuthContext';
 const Communication = () => {
   const [newMessage, setNewMessage] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const { user: currentUser } = useAuth();
-  const {
+const { user: authUser } = useAuth();
+const currentUser = authUser || { role: 'guest', name: 'Guest' };  const {
     rooms,
     selectedRoom,
     setSelectedRoom,
@@ -41,16 +41,13 @@ const Communication = () => {
   };
 
   // Filter rooms based on search query
-const filteredRooms = Array.isArray(rooms)
-  ? rooms.filter(room => 
-      room.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      room.participants?.some(p => 
-        p.name?.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    )
-  : [];
+  const filteredRooms = rooms.filter(room => 
+    room.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    room.participants.some(p => 
+      p.name.toLowerCase().includes(searchQuery.toLowerCase())
+  ));
 
-  // Notifications mock data (replace with real data if needed)
+  // Notifications mock data
   const notifications = [
     {
       id: 'notif_001',
@@ -167,18 +164,18 @@ const filteredRooms = Array.isArray(rooms)
                   {messages.map((message) => (
                     <div
                       key={message._id}
-                      className={`flex ${message.sender._id === currentUser._id ? 'justify-end' : 'justify-start'}`}
+                      className={`flex ${message.sender._id === currentUser.role ? 'justify-end' : 'justify-start'}`}
                     >
                       <div
                         className={`max-w-[70%] rounded-lg p-3 ${
-                          message.sender._id === currentUser._id
+                          message.sender._id === currentUser.role
                             ? 'bg-blue-600 text-white'
                             : 'bg-gray-100 text-gray-900'
                         }`}
                       >
                         <p className="text-sm">{message.content}</p>
                         <p className={`text-xs mt-1 ${
-                          message.sender._id === currentUser._id ? 'text-blue-100' : 'text-gray-500'
+                          message.sender._id === currentUser.role ? 'text-blue-100' : 'text-gray-500'
                         }`}>
                           {new Date(message.createdAt).toLocaleTimeString([], { 
                             hour: '2-digit', 
