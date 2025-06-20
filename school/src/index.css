@@ -11,3 +11,25 @@
 .float-animation {
   animation: float 3s ease-in-out infinite;
 }
+/* In your index.css or globals.css file */
+
+@keyframes scroll-y {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+/* 
+  We create a custom class that applies the animation.
+  The `[class~="..."]` is a robust way to select the element.
+*/
+[class~="animate-scroll-y"] {
+  animation: scroll-y linear infinite;
+}
+
+html {
+  scroll-behavior: smooth;
+}

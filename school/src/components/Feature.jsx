@@ -93,7 +93,7 @@ const FeaturesSection = () => {
             An Ecosystem of Intelligence
           </h2>
           <p className="text-lg text-slate-300 max-w-3xl mx-auto">
-            Our platform is more than a tool—it's a complete ecosystem designed to enhance every aspect of your institution.
+            Our platform is more than a tool it's a complete ecosystem designed to enhance every aspect of your institution.
           </p>
         </div>
 

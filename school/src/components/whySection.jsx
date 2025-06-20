@@ -5,7 +5,7 @@ const features = [
   {
     icon: CheckCircle,
     title: "Simplifies Daily Operations",
-    description: "Attendance, reports, scheduling, and communication — fully automated and easy to manage.",
+    description: "Attendance, reports, scheduling, and communication fully automated and easy to manage.",
   },
   {
     icon: Users,
@@ -23,10 +23,10 @@ const features = [
     description: "Centralized updates, instant notifications, and clear communication for your entire school community.",
   },
   {
-    icon: Settings,
-    title: "Grows With You",
-    description: "Fully customizable — adapt, scale, and integrate as your institution evolves.",
-  },
+  icon: Settings,
+  title: "Grows With You",
+  description: "Fully customizable to adapt, scale, evolve, and seamlessly integrate as your institution grows.",
+}
 ];
 
 const WhySection = () => {
@@ -66,16 +66,56 @@ const WhySection = () => {
             </span>
           </h2>
           <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed opacity-90">
-            Pragyan AI is built to impress — simplifying daily school operations while elevating learning, connection, and growth.
+            Pragyan AI is built to impress simplifying daily school operations while elevating learning, connection, and growth.
           </p>
         </div>
 
         {/* Features grid with staggered animations */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
-          {features.map((feature, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-6 max-w-6xl mx-auto">
+          {features.slice(0,3).map((feature, index) => (
             <Card
               key={index}
               className="group relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 shadow-2xl hover:shadow-purple-500/25 transition-all duration-500 hover:-translate-y-8 hover:rotate-1 rounded-3xl overflow-hidden animate-fade-in"
+              style={{
+                animationDelay: `${index * 0.2}s`
+              }}
+            >
+              {/* Glowing border effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
+              
+              <CardContent className="p-10 text-center relative z-10">
+                {/* Icon with enhanced animations */}
+                <div className="relative inline-flex items-center justify-center w-20 h-20 mb-8">
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl opacity-80 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-purple-400 rounded-3xl blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
+                  <div className="relative bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl w-full h-full flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-transform duration-500 shadow-2xl">
+                    <feature.icon className="h-10 w-10 text-white" />
+                  </div>
+                </div>
+                
+                {/* Content with staggered reveal */}
+                <h3 className="text-2xl font-bold text-white mb-6 group-hover:text-cyan-300 transition-colors duration-300">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-300 leading-relaxed text-lg group-hover:text-white transition-colors duration-300">
+                  {feature.description}
+                </p>
+              </CardContent>
+              
+              {/* Dynamic gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-pink-600/10 to-cyan-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              
+              {/* Shimmer effect */}
+              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12" />
+            </Card>
+          ))}
+        </div>
+
+ <div className="mt-12 flex flex-col md:flex-row justify-center items-center gap-10 px-6">
+          {features.slice(3).map((feature, index) => (
+            <Card
+              key={index}
+              className="group w-full sm:w-[25rem] relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 shadow-2xl hover:shadow-purple-500/25 transition-all duration-500 hover:-translate-y-8 hover:rotate-1 rounded-3xl overflow-hidden animate-fade-in"
               style={{
                 animationDelay: `${index * 0.2}s`
               }}

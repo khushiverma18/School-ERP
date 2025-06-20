@@ -1,7 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
+import { useState } from "react";
+import LoginModal from './LoginCard';
+import BookDemoForm from "./Bookdemo";
 
 const Hero = () => {
+   const [isBookFormOpen, setIsBookFormOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  const openLoginModal = () => {
+    setIsLoginModalOpen(true);
+    setIsMobileMenuOpen(false);
+  };
+
+  const closeLoginModal = () => {
+    setIsLoginModalOpen(false);
+  };
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background image */}
@@ -35,21 +49,23 @@ const Hero = () => {
             Pragyan AI Start Here
           </h2>
           <p className="text-lg md:text-xl text-blue-100 mb-12 max-w-3xl mx-auto leading-relaxed">
-            One powerful platform to simplify management, support learning, and connect your entire institution — all powered by AI.
+            One powerful platform to simplify management, support learning, and connect your entire institution all powered by AI.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg group">
-              Book a Demo
+            <Button size="lg"  onClick={() => setIsBookFormOpen(true)} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg group">
+             <span> Book a Demo </span>
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg group">
+            <Button onClick={openLoginModal} variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg group">
               <Play className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
               Get Started
             </Button>
           </div>
         </div>
       </div>
+     <BookDemoForm isOpen={isBookFormOpen} onClose={() => setIsBookFormOpen(false)} />
+      <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
     </section>
   );
 };

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Calendar } from "lucide-react";
+import LoginModal from './LoginCard';
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 const containerVariants = {
@@ -23,6 +24,16 @@ const itemVariants = {
 const CTASection = () => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  
+    const openLoginModal = () => {
+      setIsLoginModalOpen(true);
+      setIsMobileMenuOpen(false);
+    };
+  
+    const closeLoginModal = () => {
+      setIsLoginModalOpen(false);
+    };
 
   const springConfig = { damping: 25, stiffness: 200 };
   const mouseXSpring = useSpring(mouseX, springConfig);
@@ -101,7 +112,7 @@ const CTASection = () => {
           {/* Schedule Demo Button */}
           <div className="relative group">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse group-hover:animate-none"></div>
-            <Button
+            <Button onClick={openLoginModal} 
               size="lg"
               className="relative bg-slate-900 text-white hover:bg-slate-800 px-8 py-3 text-lg font-semibold overflow-hidden"
             >
@@ -127,6 +138,7 @@ const CTASection = () => {
           </Button>
         </motion.div>
       </motion.div>
+      <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
     </section>
   );
 };

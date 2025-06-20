@@ -7,8 +7,9 @@ const UserManagement = ({ tempteach = [], tempStudents = [], tempparent = [] }) 
   const context = useContext(AppContext);
   const [activeTab, setActiveTab] = useState('students');
   const [searchTerm, setSearchTerm] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
+  const [selectedClass, setSelectedClass] = useState('All');
 
-  // Handle case where context is not yet loaded
   if (!context) {
     return <div className="text-center py-10 text-gray-500">Loading user data...</div>;
   }
@@ -25,15 +26,25 @@ const UserManagement = ({ tempteach = [], tempStudents = [], tempparent = [] }) 
     { id: 'parents', label: 'Parents', icon: Users, count: allParents.length },
   ];
 
+  const classOptions = [...new Set(allStudents.map((s) => s.Class))];
+
   const getFilteredUsers = () => {
-    const dataset =
+    let dataset =
       activeTab === 'students' ? allStudents :
       activeTab === 'teachers' ? allTeachers :
       allParents;
 
-    return dataset.filter(user =>
-      user.name?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    if (searchTerm) {
+      dataset = dataset.filter((user) =>
+        user.name?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (activeTab === 'students' && selectedClass !== 'All') {
+      dataset = dataset.filter((user) => user.Class === selectedClass);
+    }
+
+    return dataset;
   };
 
   return (
@@ -58,7 +69,12 @@ const UserManagement = ({ tempteach = [], tempStudents = [], tempparent = [] }) 
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => {
+                  setActiveTab(tab.id);
+                  setSearchTerm('');
+                  setSelectedClass('All');
+                  setShowFilters(false);
+                }}
                 className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${
                   activeTab === tab.id
                     ? 'border-indigo-500 text-indigo-600'
@@ -88,11 +104,33 @@ const UserManagement = ({ tempteach = [], tempStudents = [], tempparent = [] }) 
             className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
         </div>
-        <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+        <button
+          onClick={() => setShowFilters(!showFilters)}
+          className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+        >
           <Filter className="h-4 w-4" />
           <span>Filter</span>
         </button>
       </div>
+
+      {/* Filter Dropdown */}
+      {showFilters && activeTab === 'students' && (
+        <div className="mt-2 sm:w-60">
+          <label className="text-sm font-medium text-gray-700">Filter by Class:</label>
+          <select
+            value={selectedClass}
+            onChange={(e) => setSelectedClass(e.target.value)}
+            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+          >
+            <option value="All">All</option>
+            {classOptions.map((cls) => (
+              <option key={cls} value={cls}>
+                Class {cls}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {/* Table */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">

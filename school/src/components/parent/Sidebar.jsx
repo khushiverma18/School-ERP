@@ -4,7 +4,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Home, User, Calendar, BookOpen, GraduationCap, MessageSquare, 
   CreditCard, FileText, Download, Settings, LogOut, GraduationCap as LogoIcon, 
-  ChevronLeft, ChevronRight 
+  ChevronLeft, ChevronRight ,PackageCheck 
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
@@ -24,7 +24,7 @@ const logout = () => {
     { name: 'Homework', href: '/parent/homework', icon: BookOpen },
     { name: 'Study Materials', href: '/parent/materials', icon: Download },
     { name: 'Communication', href: '/parent/communication', icon: MessageSquare },
-    { name: 'Deliver', href: '/parent/deliver', icon: FileText },
+    { name: 'Deliver', href: '/parent/deliver', icon: PackageCheck  },
     { name: 'Fee Payment', href: '/parent/fees', icon: CreditCard },
     { name: 'Reports', href: '/parent/reports', icon: FileText },
   ];

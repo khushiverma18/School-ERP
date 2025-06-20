@@ -6,7 +6,14 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  const navItems = ['Home', 'About', 'Academics', 'Admissions', 'Contact'];
+  // Navigation items with corresponding section IDs
+  const navItems = [
+    { label: 'Home', id: 'home' },            // Hero
+    { label: 'Features', id: 'features' },    // WhySection
+    { label: 'Ecosystem', id: 'ecosystem' },  // FeaturesSection
+    { label: 'About', id: 'about' },          // AudienceSection
+    { label: 'Contact', id: 'contact' },      // CTASection
+  ];
 
   const openLoginModal = () => {
     setIsLoginModalOpen(true);
@@ -51,11 +58,11 @@ const Header = () => {
             <nav className="hidden lg:flex items-center space-x-8">
               {navItems.map((item, index) => (
                 <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
+                  key={item.id}
+                  href={`#${item.id}`}
                   className="relative px-4 py-2 text-white/90 hover:text-white transition-all duration-300 group"
                 >
-                  <span className="relative z-10">{item}</span>
+                  <span className="relative z-10">{item.label}</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-white/5 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300"></div>
                   <div className={`absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-400 to-purple-500 group-hover:w-full transition-all duration-300 delay-[${index * 100}ms]`}></div>
                 </a>
@@ -70,7 +77,7 @@ const Header = () => {
                 </div>
                 <div>
                   <p className="text-xs text-purple-200">Call us</p>
-                  <span className="text-sm font-medium">+1 (555) 123-4567</span>
+                  <span className="text-sm font-medium">+91 8228884343</span>
                 </div>
               </div>
               <div className="flex items-center space-x-2 px-4 py-2 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20">
@@ -79,7 +86,7 @@ const Header = () => {
                 </div>
                 <div>
                   <p className="text-xs text-purple-200">Email us</p>
-                  <span className="text-sm font-medium">info@edumanage.edu</span>
+                  <span className="text-sm font-medium">mqeoperation@gmail.com</span>
                 </div>
               </div>
               <button
@@ -95,7 +102,7 @@ const Header = () => {
             <div className="flex items-center space-x-3">
               <button
                 onClick={openLoginModal}
-                className="lg:hidden xl:hidden flex items-center justify-center p-2 bg-white/10 rounded-lg backdrop-blur-sm border border-white/20 hover:bg-white/20"
+                className="lg:hidden flex items-center justify-center p-2 bg-white/10 rounded-lg backdrop-blur-sm border border-white/20 hover:bg-white/20"
                 aria-label="Login"
               >
                 <LogIn className="h-6 w-6" />
@@ -116,9 +123,9 @@ const Header = () => {
               <nav className="container mx-auto px-4 py-6">
                 <ul className="space-y-4">
                   {navItems.map((item, index) => (
-                    <li key={item}>
+                    <li key={item.id}>
                       <a
-                        href={`#${item.toLowerCase()}`}
+                        href={`#${item.id}`}
                         className="block px-4 py-3 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300 flex items-center space-x-3"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
@@ -129,7 +136,7 @@ const Header = () => {
                           index === 3 ? 'from-pink-400 to-fuchsia-500' :
                           'from-purple-500 to-indigo-600'
                         }`}></div>
-                        <span>{item}</span>
+                        <span>{item.label}</span>
                       </a>
                     </li>
                   ))}

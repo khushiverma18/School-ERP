@@ -113,7 +113,6 @@ export const AppProvider = ({ children }) => {
     { id: 4, name: 'Aayush', Class: '12' , email: 'john@example.com', phone: '+1234567890', status: 'Active'},
     { id: 5, name: 'Simmi', Class: '10', email: 'john@example.com', phone: '+1234567890', status: 'Active' },
     { id: 6, name: 'Mukesh', Class: '10' , email: 'john@example.com', phone: '+1234567890', status: 'Active' },
-    { id: 6, name: 'Mukesh', Class: '10', email: 'john@example.com', phone: '+1234567890', status: 'Active'  },
     { id: 7, name: 'Khushi', Class: '9' , email: 'john@example.com', phone: '+1234567890', status: 'Active' },
     { id: 8, name: 'Radhika', Class: '10', email: 'john@example.com', phone: '+1234567890', status: 'Active'  },
     { id: 9, name: 'Muskan', Class: '11', email: 'john@example.com', phone: '+1234567890', status: 'Active'  },

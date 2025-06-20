@@ -34,7 +34,7 @@ const AdminSidebar = ({ isOpen, setIsOpen }) => {
      { name: 'AdminPanel', href: '/admin/Add', icon: User },
     { name: 'users', href: '/admin/UserManagement', icon: Users },
     { name: 'timetable', href: '/admin/Timetable', icon: Calendar },
-    { name: 'attendance', href: '/admin/Attendance', icon: FileText },
+    { name: 'attendance', href: '/admin/attendance', icon: FileText },
     { name: 'results', href: '/admin/ExamResults', icon: GraduationCap },
     { name: 'fees', href: '/admin/FeeManagement', icon: Download },
     { name: 'chat', href: '/admin/ChatCenter', icon: MessageSquare },

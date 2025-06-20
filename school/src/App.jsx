@@ -61,6 +61,12 @@ import TeacherSettings from "./components/teacher/Setting";
 import { SocketProvider } from './context/SocketContext';
 import {AuthProvider} from './context/AuthContext';
 import UniformDeliveryModule from "./components/parent/Deliver";
+import Game from "./components/student/Game";
+import Hero from "./components/Hero";
+import WhySection from "./components/whySection";
+import FeaturesSection from "./components/Feature";
+import AudienceSection from "./components/Audiencesection";
+import CTASection from "./components/Ctasection";
 
 
 
@@ -91,10 +97,9 @@ const App = () => (
             <Route path="FeeManagement" element={<FeeManagement />} />
             <Route path="UserManagement" element={<UserManagement />} />
             <Route path="settings" element={<AdminSettings />} />
-            <Route path="Attendence" element={<AttendanceReports />} />
             <Route path="student" element={<AdminStudents />} />
             <Route path="teachers" element={<AdminTeacher />} />
-            <Route path="attendance" element={<AdminAttendance />} />
+            <Route path="attendance" element={<AttendanceReports />} />
             <Route path="reports" element={<AIReportGenerator />} />
           </Route>
 
@@ -103,9 +108,9 @@ const App = () => (
           <Route path="/admin/panal" element={<AdminPanel />} />
           <Route path="/admin/student" element={<AdminStudents />} />
           <Route path="/admin/teachers" element={<AdminTeacher />} />
-          <Route path="/admin/attendance" element={<AdminAttendance />} />
+          <Route path="/admin/attendances" element={<AdminAttendance />} />
           <Route path="/admin/events" element={<AdminEvents />} />
-          <Route path="/admin/results" element={<AdminResults />} />
+          <Route path="/admin/result" element={<AdminResults />} />
           <Route path="/admin/reports" element={<AIReportGenerator />} />
 
 
@@ -122,6 +127,7 @@ const App = () => (
             <Route path="materials" element={<StudentMaterials />} />
             <Route path="communication" element={<StudentCommunication />} />
             <Route path="settings" element={<StudentSettings />} />
+            <Route path="Game" element={<Game/>} />
           </Route>
 
 

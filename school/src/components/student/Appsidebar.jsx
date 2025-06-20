@@ -1,7 +1,7 @@
 import { 
   Home, User, Calendar, BookOpen, MessageSquare, 
   FileText, Download, Settings, LogOut, GraduationCap as LogoIcon, 
-  ChevronLeft, Upload, ChevronRight, BarChart3 
+  ChevronLeft, Upload, ChevronRight, BarChart3 , Gamepad2
 } from 'lucide-react';
 import { NavLink, useLocation ,useNavigate} from "react-router-dom";
 
@@ -23,6 +23,7 @@ export function StudentSidebar({ isOpen, setIsOpen }) {
     { title: "Assignments", icon: Upload, url: "/student/assignments" },
     { title: "Study Materials", icon: BookOpen, url: "/student/materials" },
     { title: "Communication", icon: MessageSquare, url: "/student/communication" },
+     { title: "Game", icon:  Gamepad2, url: "/student/Game" },
   ];
 
   const location = useLocation();

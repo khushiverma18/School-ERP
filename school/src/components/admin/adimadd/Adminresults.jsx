@@ -7,10 +7,11 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle, AlertCircle, Users, BookOpen, Trophy, GraduationCap } from "lucide-react";
+import AdminHeader from '../AdminHeader';
+
 
 const AdminResults = () => {
   const { students, addResult } = useContext(AppContext);
-
   const [selectedClass, setSelectedClass] = useState('');
   const [selectedStudent, setSelectedStudent] = useState('');
   const [subject, setSubject] = useState('');
@@ -88,6 +89,7 @@ const AdminResults = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4 md:p-8">
+     <AdminHeader/>
       <div className="max-w-4xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-8">

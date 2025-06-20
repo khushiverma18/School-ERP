@@ -3,6 +3,7 @@ import {
   XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, AreaChart, Area
 } from 'recharts';
+import { ListCollapse, School, Trophy, ClipboardCheck } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 // CORRECTED: Removed duplicate 'TrendingUp' and unused icons
@@ -60,6 +61,19 @@ const tasksData = [
   { title: 'Admission Interview', subtitle: 'New Student Interview', time: '3:00 PM' },
 ];
 
+  const updates = [
+    { text: 'Complete the class 12 syllabus in 3 months', icon: <ListCollapse className="w-4 h-4 mr-3 text-cyan-400" /> },
+    { text: 'School organized quiz on 17th', icon: <School className="w-4 h-4 mr-3 text-amber-400" /> },
+    { text: 'Volleyball tournament on 25th', icon: <Trophy className="w-4 h-4 mr-3 text-lime-400" /> },
+    { text: 'New practice papers available for Physics', icon: <ListCollapse className="w-4 h-4 mr-3 text-cyan-400" /> },
+    { text: 'Submit science projects by Friday', icon: <School className="w-4 h-4 mr-3 text-amber-400" /> },
+  ];
+
+   // Duplicate the updates for a seamless loop
+  const displayUpdates = [...updates, ...updates];
+  
+  // Dynamic duration based on number of items. Adjust the multiplier (e.g., 4) for speed.
+  const animationDuration = `${updates.length * 4}s`;
 // --- CUSTOM COMPACT CALENDAR COMPONENT ---
 const CompactCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date(2025, 5, 1)); // Set to June 2025
@@ -245,14 +259,35 @@ const Dashboard = () => {
         </div>
         
         {/* CORRECTED: Updates card is now inside the main container */}
-        <div className="bg-slate-800/50 border border-slate-700 backdrop-blur-sm p-4 rounded-xl">
-          <h4 className="text-lg font-semibold mb-2">Updates</h4>
-          <ul className="list-disc list-inside space-y-1 text-slate-300">
-            <li>Complete the class 12 syllabus in 3 months</li>
-            <li>School organized quiz on 17th</li>
-            <li>Volleyball tournament on 25th</li>
-          </ul>
-        </div>
+         <div className="bg-slate-800/50 border border-slate-700 backdrop-blur-sm p-4 rounded-xl ">
+      <h4 className="text-lg font-semibold mb-4 text-white">Latest Updates</h4>
+      
+      {/* Viewport for the animation with fade effect */}
+      <div className="relative h-48 overflow-hidden">
+        {/* The scrolling list */}
+        <ul 
+          className="animate-scroll-y" 
+          style={{ animationDuration }}
+        >
+          {displayUpdates.map((update, index) => (
+            <li 
+              key={index} 
+              // Add a slight delay between items for a staggered feel if you wanted
+              className="flex items-center text-slate-300 py-3 border-b border-slate-700/50"
+            >
+              <span className="shrink-0">{update.icon}</span>
+              <span>{update.text}</span>
+            </li>
+          ))}
+        </ul>
+        
+        {/* Top Fade */}
+        <div className="absolute top-0 left-0 w-full h-6 bg-gradient-to-b from-slate-800 to-transparent" />
+        
+        {/* Bottom Fade */}
+        <div className="absolute bottom-0 left-0 w-full h-6 bg-gradient-to-t from-slate-800 to-transparent" />
+      </div>
+    </div>
       </div>
     </div>
   );

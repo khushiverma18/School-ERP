@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
-import { Mail, MapPin, Phone, Clock } from 'lucide-react';
+import { Mail, MapPin, Phone, Clock, LogIn } from 'lucide-react';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import AdmissionForm from './admission';
-
+import LoginModal from './LoginCard';
 const Footer = () => {
   const [isAdmissionFormOpen, setIsAdmissionFormOpen] = useState(false);
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+   const openLoginModal = () => {
+    setIsLoginModalOpen(true);
+    setIsMobileMenuOpen(false);
+  };
+
+  const closeLoginModal = () => {
+    setIsLoginModalOpen(false);
+  };
 
   return (
     <>
@@ -35,25 +45,40 @@ const Footer = () => {
 
             {/* Quick Links */}
             <div className="flex flex-col justify-between">
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-                <ul className="space-y-3">
-                  {['About Us', 'Academics', 'Faculty', 'Events', 'News'].map((item) => (
-                    <li key={item}>
-                      <a href={`#${item.toLowerCase().replace(/\s/g, '-')}`} className="hover:text-white transition">
-                        {item}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <button
-                onClick={() => setIsAdmissionFormOpen(true)}
-                className="mt-6 py-2 px-6 rounded-xl text-white font-semibold border border-purple-400 bg-gradient-to-r from-purple-600 to-pink-500 shadow-md hover:scale-105 transition-all duration-300"
-              >
-                Apply Now
-              </button>
-            </div>
+  <div>
+    <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+    <ul className="space-y-3">
+      {['About Us', 'Academics', 'Faculty', 'Events', 'News'].map((item) => (
+        <li key={item}>
+          <a
+            href={`#${item.toLowerCase().replace(/\s/g, '-')}`}
+            className="hover:text-white transition"
+          >
+            {item}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  {/* Button container */}
+  <div className="mt-6 flex flex-row gap-4">
+    <button
+      onClick={() => setIsAdmissionFormOpen(true)}
+      className="py-2 px-6 rounded-xl text-white font-semibold border border-purple-400 bg-gradient-to-r from-purple-600 to-pink-500 shadow-md hover:scale-105 transition-all duration-300"
+    >
+      Apply Now
+    </button>
+
+    <button
+      onClick={openLoginModal}
+      className="flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-[#d63384] via-[#a84fdc] to-[#6610f2] text-white font-semibold rounded-xl shadow-md hover:from-[#c52d78] hover:to-[#541ec4] transition-all duration-300 transform hover:scale-105"
+    >
+      <LogIn className="h-5 w-5" />
+      <span>Login</span>
+    </button>
+  </div>
+</div>
 
             {/* Contact Info */}
             <div>
@@ -65,11 +90,11 @@ const Footer = () => {
                 </div>
                 <div className="flex items-start space-x-3">
                   <Phone className="text-purple-400 w-4 h-4 mt-1" />
-                  <span>+1 (585) 123–5567</span>
+                  <span>+91 8228884343</span>
                 </div>
                 <div className="flex items-start space-x-3">
                   <Mail className="text-purple-400 w-4 h-4 mt-1" />
-                  <span>info@edumanage.edu</span>
+                  <span>mqeoperation@gmail.com</span>
                 </div>
                 <div className="flex items-start space-x-3">
                   <Clock className="text-purple-400 w-4 h-4 mt-1" />
@@ -102,6 +127,7 @@ const Footer = () => {
       </footer>
 
       <AdmissionForm isOpen={isAdmissionFormOpen} onClose={() => setIsAdmissionFormOpen(false)} />
+         <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
     </>
   );
 };

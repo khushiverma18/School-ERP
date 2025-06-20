@@ -56,8 +56,8 @@ const quickActions = [
 const featureModules = [
   { to: "/admin/student", title: "Add Student", desc: "Quickly add a new student to the system", icon: "👨‍🎓", color: "text-blue-600" },
   { to: "/admin/teachers", title: "Add Teacher", desc: "Register new teaching staff members", icon: "👨‍🏫", color: "text-green-600" },
-  { to: "/admin/attendance", title: "Record Attendance", desc: "Track daily student attendance records", icon: "📋", color: "text-purple-600" },
-  { to: "/admin/results", title: "Upload Results", desc: "Manage and upload exam results", icon: "📈", color: "text-orange-600" },
+  { to: "/admin/attendances", title: "Record Attendance", desc: "Track daily student attendance records", icon: "📋", color: "text-purple-600" },
+  { to: "/admin/result", title: "Upload Results", desc: "Manage and upload exam results", icon: "📈", color: "text-orange-600" },
   { to: "/admin/events", title: "Schedule Events", desc: "Create and organize school events", icon: "🎉", color: "text-pink-600" },
   { to: "/admin/reports", title: "View Reports", desc: "Generate comprehensive school reports", icon: "📊", color: "text-cyan-600" },
 ];
@@ -162,7 +162,7 @@ const AdminPanel = () => {
           className="mb-8"
         >
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-slate-800 mb-2">🎯 Feature Modules</h2>
+            <h2 className="text-3xl font-bold text-slate-800 mb-2"> Feature Modules</h2>
             <p className="text-slate-600 max-w-2xl mx-auto">
               Access all the tools you need to manage your school efficiently
             </p>
