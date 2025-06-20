@@ -7,8 +7,8 @@ const Communications = () => {
   const [newMessage, setNewMessage] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const messagesEndRef = useRef(null);
-  const { user: currentUser } = useAuth();
-  const {
+const { user: authUser } = useAuth();
+const currentUser = authUser || { role: 'guest', name: 'Guest' };  const {
     rooms,
     selectedRoom,
     setSelectedRoom,
@@ -28,34 +28,16 @@ const Communications = () => {
     return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   };
 
-  const formatDate = (timestamp) => {
-    const date = new Date(timestamp);
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    if (date.toDateString() === today.toDateString()) {
-      return 'Today';
-    } else if (date.toDateString() === yesterday.toDateString()) {
-      return 'Yesterday';
-    } else {
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    }
-  };
-
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const filteredRooms = Array.isArray(rooms)
-  ? rooms.filter(room => 
-      room.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      room.participants?.some(p => 
-        p.name?.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+  const filteredRooms = rooms.filter(room => 
+    room.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    room.participants.some(p => 
+      p.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
-  : [];
-
+  );
 
   return (
     <div className="h-[calc(100vh-12rem)]">
@@ -119,7 +101,6 @@ const Communications = () => {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between">
                       <p className="font-medium text-gray-900 text-sm">{room.name}</p>
-                      <span className="text-xs text-gray-500">{formatDate(room.createdAt)}</span>
                     </div>
                     <p className="text-sm text-gray-700 truncate">
                       {room.participants.map(p => p.name).join(', ')}
@@ -166,18 +147,18 @@ const Communications = () => {
                 {messages.map((message) => (
                   <div
                     key={message._id}
-                    className={`flex ${message.sender._id === currentUser._id ? 'justify-end' : 'justify-start'}`}
+                    className={`flex ${message.sender._id === currentUser.role ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
                       className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                        message.sender._id === currentUser._id
+                        message.sender._id === currentUser.role
                           ? 'bg-blue-600 text-white'
                           : 'bg-gray-100 text-gray-900'
                       }`}
                     >
                       <p className="text-sm">{message.content}</p>
                       <p className={`text-xs mt-1 ${
-                        message.sender._id === currentUser._id ? 'text-blue-100' : 'text-gray-500'
+                        message.sender._id === currentUser.role ? 'text-blue-100' : 'text-gray-500'
                       }`}>
                         {formatTime(message.createdAt)}
                       </p>
@@ -293,12 +274,12 @@ const MobileChatView = ({
     
     <div className="flex-1 overflow-y-auto p-4 space-y-3">
       {messages.map((message) => (
-        <div key={message._id} className={`flex ${message.sender._id === currentUser._id ? 'justify-end' : 'justify-start'}`}>
+        <div key={message._id} className={`flex ${message.sender._id === currentUser.role ? 'justify-end' : 'justify-start'}`}>
           <div className={`max-w-xs px-3 py-2 rounded-lg ${
-            message.sender._id === currentUser._id ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-900'
+            message.sender._id === currentUser.role ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-900'
           }`}>
             <p className="text-sm">{message.content}</p>
-            <p className={`text-xs mt-1 ${message.sender._id === currentUser._id ? 'text-blue-100' : 'text-gray-500'}`}>
+            <p className={`text-xs mt-1 ${message.sender._id === currentUser.role ? 'text-blue-100' : 'text-gray-500'}`}>
               {formatTime(message.createdAt)}
             </p>
           </div>

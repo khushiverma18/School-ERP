@@ -72,7 +72,21 @@ import CTASection from "./components/Ctasection";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () =>{
+  // Initialize chat storage if not exists
+if (!localStorage.getItem('school_chat')) {
+  localStorage.setItem('school_chat', JSON.stringify({
+    "admin-teacher": [
+      { sender: "admin", message: "Hello Teacher", timestamp: "2025-06-18T10:00:00" },
+      { sender: "teacher", message: "Hi Admin", timestamp: "2025-06-18T10:01:00" }
+    ],
+    "parent-student": [
+      { sender: "parent", message: "Are you home?", timestamp: "2025-06-18T10:05:00" }
+    ]
+  }));
+}
+console.log("chat module: ",localStorage.getItem('school_chat'))
+  return (
   <QueryClientProvider client={queryClient}>
         <AuthProvider>
 
@@ -171,6 +185,6 @@ const App = () => (
      </AuthProvider>
 
   </QueryClientProvider>
-);
+);}
 
 export default App;

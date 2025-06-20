@@ -1,93 +1,140 @@
-import { useState, useEffect, useContext } from 'react';
-import { useSocket } from '../context/SocketContext';
-import axios from 'axios';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 
+const CHAT_STORAGE_KEY = 'school_chat';
+const DEFAULT_ROLES = ['admin', 'teacher', 'parent', 'student'];
+const GUEST_USER = { role: 'guest', name: 'Guest User' };
+
+const roleDisplayMap = {
+  admin: 'Admin User',
+  teacher: 'Teacher User',
+  parent: 'Parent User',
+  student: 'Student User',
+  guest: 'Guest User'
+};
+
 export default function useChat() {
+  const { user: currentUser } = useAuth();
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const socket = useSocket();
-  const { token } = useAuth();
 
-  // Fetch user's chat rooms
-  const fetchRooms = async () => {
-    try {
-      const res = await axios.get('/api/chat/rooms', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setRooms(res.data);
-      setLoading(false);
-    } catch (err) {
-      console.error('Error fetching rooms:', err);
-    }
-  };
+  // Generate chat rooms
+  useEffect(() => {
+    const userRole = currentUser?.role || 'guest';
+    const userName = currentUser?.name || GUEST_USER.name;
 
-  // Fetch room messages
-  const fetchMessages = async (roomId) => {
-    try {
-      const res = await axios.get(`/api/chat/rooms/${roomId}/messages`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setMessages(res.data);
-    } catch (err) {
-      console.error('Error fetching messages:', err);
+    const otherRoles = DEFAULT_ROLES.filter(role => role !== userRole);
+
+    const generatedRooms = otherRoles.map(role => {
+      const roomId = [userRole, role].sort().join('-');
+      return {
+        _id: roomId,
+        name: roleDisplayMap[role] || role,
+        participants: [
+          { _id: userRole, name: roleDisplayMap[userRole] || userName },
+          { _id: role, name: roleDisplayMap[role] || role }
+        ]
+      };
+    });
+
+    setRooms(generatedRooms);
+  }, [currentUser]);
+
+  // Load messages for selected room
+  useEffect(() => {
+    if (!selectedRoom) {
+      setMessages([]);
+      return;
     }
-  };
+
+    const chatData = JSON.parse(localStorage.getItem(CHAT_STORAGE_KEY) || '{}');
+    const roomMessages = chatData[selectedRoom._id] || [];
+
+    const transformedMessages = roomMessages.map(msg => ({
+      ...msg,
+      _id: msg.timestamp + msg.sender,
+      content: msg.message,
+      createdAt: msg.timestamp,
+      sender: {
+        _id: msg.sender,
+        name: roleDisplayMap[msg.sender] || msg.sender
+      }
+    }));
+
+    setMessages(transformedMessages);
+  }, [selectedRoom]);
 
   // Send message
-  const sendMessage = async (content) => {
-    if (!selectedRoom || !content.trim()) return;
-    
-    try {
-      await axios.post('/api/chat/rooms/message', {
-        roomId: selectedRoom._id,
-        content
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-    } catch (err) {
-      console.error('Error sending message:', err);
-    }
-  };
+  const sendMessage = useCallback((message) => {
+    if (!selectedRoom || !message.trim()) return;
 
-  // Socket event listeners
+    const sender = currentUser?.role || 'guest';
+    const senderName = currentUser?.name || GUEST_USER.name;
+
+    const newMessage = {
+      sender,
+      message,
+      timestamp: new Date().toISOString()
+    };
+
+    const chatData = JSON.parse(localStorage.getItem(CHAT_STORAGE_KEY) || '{}');
+    const roomMessages = chatData[selectedRoom._id] || [];
+    const updatedMessages = [...roomMessages, newMessage];
+
+    const updatedChatData = {
+      ...chatData,
+      [selectedRoom._id]: updatedMessages
+    };
+
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(updatedChatData));
+
+    setMessages(prev => [
+      ...prev,
+      {
+        ...newMessage,
+        _id: newMessage.timestamp + newMessage.sender,
+        content: newMessage.message,
+        createdAt: newMessage.timestamp,
+        sender: {
+          _id: newMessage.sender,
+          name: roleDisplayMap[newMessage.sender] || senderName
+        }
+      }
+    ]);
+  }, [selectedRoom, currentUser]);
+
+  // Sync messages in real time (other tabs)
   useEffect(() => {
-    if (!socket) return;
+    const handleStorageChange = (e) => {
+      if (e.key === CHAT_STORAGE_KEY && selectedRoom) {
+        const chatData = JSON.parse(e.newValue || '{}');
+        const roomMessages = chatData[selectedRoom._id] || [];
 
-    const handleNewMessage = (message) => {
-      if (message.room === selectedRoom?._id) {
-        setMessages(prev => [...prev, message]);
+        const transformedMessages = roomMessages.map(msg => ({
+          ...msg,
+          _id: msg.timestamp + msg.sender,
+          content: msg.message,
+          createdAt: msg.timestamp,
+          sender: {
+            _id: msg.sender,
+            name: roleDisplayMap[msg.sender] || msg.sender
+          }
+        }));
+
+        setMessages(transformedMessages);
       }
     };
 
-    socket.on('newMessage', handleNewMessage);
-
-    return () => {
-      socket.off('newMessage', handleNewMessage);
-    };
-  }, [socket, selectedRoom]);
-
-  // Join room when selected
-  useEffect(() => {
-    if (socket && selectedRoom) {
-      socket.emit('joinRoom', { roomId: selectedRoom._id });
-      fetchMessages(selectedRoom._id);
-    }
-  }, [socket, selectedRoom]);
-
-  // Initial rooms fetch
-  useEffect(() => {
-    fetchRooms();
-  }, []);
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [selectedRoom]);
 
   return {
     rooms,
     selectedRoom,
     setSelectedRoom,
     messages,
-    loading,
     sendMessage
   };
 }
