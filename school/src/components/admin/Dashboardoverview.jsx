@@ -3,12 +3,12 @@ import {
   XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, AreaChart, Area
 } from 'recharts';
-import { ListCollapse, School, Trophy, ClipboardCheck } from 'lucide-react';
+import { ListCollapse, School, Trophy, ClipboardCheck,Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 // CORRECTED: Removed duplicate 'TrendingUp' and unused icons
-import { Users, GraduationCap, Building, DollarSign, TrendingUp, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
-
+import { Users, GraduationCap, Building, DollarSign, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 // --- DATA DEFINITIONS (UNCHANGED) ---
 
 const summaryData = [
@@ -59,7 +59,10 @@ const tasksData = [
   { title: 'Staff Meeting', subtitle: 'Weekly Teacher Briefing', time: '11:00 AM' },
   { title: 'Exam Review', subtitle: 'Review Class 10 Papers', time: '1:00 PM' },
   { title: 'Admission Interview', subtitle: 'New Student Interview', time: '3:00 PM' },
+  { title: 'Library Inspection', subtitle: 'Check overdue books and inventory', time: '4:00 PM' },
+  { title: 'Sports Practice', subtitle: 'Supervise inter-house football training', time: '5:30 PM' },
 ];
+
 
   const updates = [
     { text: 'Complete the class 12 syllabus in 3 months', icon: <ListCollapse className="w-4 h-4 mr-3 text-cyan-400" /> },
@@ -125,6 +128,16 @@ const CompactCalendar = () => {
 
 // --- MAIN DASHBOARD COMPONENT ---
 const Dashboard = () => {
+  const [showExtra, setShowExtra] = useState(false);
+
+  const initialTasks = tasksData.slice(0, 4); // 1–4
+  const extendedTasks = tasksData.slice(2, 6); // 3–6
+
+  const variants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -40 },
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white p-6">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -237,26 +250,61 @@ const Dashboard = () => {
           <div className="lg:col-span-1"><CompactCalendar /></div>
 
           {/* Today's Tasks */}
-          <div className='lg:col-span-1'>
-            <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm h-full">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center">Today's Tasks<Badge className="ml-2 bg-green-500/20 text-green-400 border-green-500/20">11</Badge></CardTitle>
-                <p className="text-slate-400 text-sm">6 of 11 Completed</p>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {tasksData.map((task, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg">
-                      <div className="flex items-center space-x-3"><Clock className="w-4 h-4 text-slate-400" /><div><p className="text-sm font-medium text-white">{task.title}</p><p className="text-xs text-slate-400">{task.subtitle}</p></div></div>
-                      <span className="text-sm text-slate-300">{task.time}</span>
+         <div className="lg:col-span-1">
+      <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm h-full">
+        <CardHeader>
+          <CardTitle className="text-white flex items-center">
+            Today's Tasks
+            <Badge className="ml-2 bg-green-500/20 text-green-400 border-green-500/20">
+              {tasksData.length}
+            </Badge>
+          </CardTitle>
+          <p className="text-slate-400 text-sm">6 of {tasksData.length} Completed</p>
+        </CardHeader>
+
+        <CardContent>
+          <div className="space-y-3 relative min-h-[300px] overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={showExtra ? 'extended' : 'initial'}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={variants}
+                transition={{ duration: 0.4 }}
+                className="space-y-3"
+              >
+                {(showExtra ? extendedTasks : initialTasks).map((task, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <Clock className="w-4 h-4 text-slate-400" />
+                      <div>
+                        <p className="text-sm font-medium text-white">{task.title}</p>
+                        <p className="text-xs text-slate-400">{task.subtitle}</p>
+                      </div>
                     </div>
-                  ))}
-                </div>
-                <button className="w-full mt-4 text-sm text-blue-400 hover:text-blue-300 transition-colors">See All →</button>
-              </CardContent>
-            </Card>
+                    <span className="text-sm text-slate-300">{task.time}</span>
+                  </div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
           </div>
-        </div>
+
+          <div className="mt-4 text-center">
+            <button
+              onClick={() => setShowExtra((prev) => !prev)}
+              className="w-full text-sm text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              {showExtra ? '← Go Back' : 'See More →'}
+            </button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+    </div>
         
         {/* CORRECTED: Updates card is now inside the main container */}
          <div className="bg-slate-800/50 border border-slate-700 backdrop-blur-sm p-4 rounded-xl ">

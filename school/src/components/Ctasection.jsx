@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Calendar } from "lucide-react";
 import LoginModal from './LoginCard';
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import CoPage from "./ContactPage";
+import BookDemoForm from "./Bookdemo";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -25,6 +27,7 @@ const CTASection = () => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const [isBookFormOpen, setIsBookFormOpen] = useState(false);
   
     const openLoginModal = () => {
       setIsLoginModalOpen(true);
@@ -126,6 +129,7 @@ const CTASection = () => {
 
           {/* Contact Us Button */}
           <Button
+          onClick={() => setIsBookFormOpen(true)}
             variant="outline"
             size="lg"
             className="border-slate-600 bg-slate-900/50 text-slate-300 hover:text-white hover:border-white px-8 py-3 text-lg font-semibold group relative overflow-hidden backdrop-blur-sm"
@@ -139,6 +143,7 @@ const CTASection = () => {
         </motion.div>
       </motion.div>
       <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
+       <CoPage isOpen={isBookFormOpen} onClose={() => setIsBookFormOpen(false)} />
     </section>
   );
 };

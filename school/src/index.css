@@ -33,3 +33,242 @@
 html {
   scroll-behavior: smooth;
 }
+
+
+
+/* === कस्टम एनिमेशन और स्टाइल्स === */
+
+/* 1. ऑरोरा बैकग्राउंड एनिमेशन */
+@keyframes aurora-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 2. इंटरैक्टिव कार्ड ग्लो इफ़ेक्ट */
+.glowing-card {
+  position: relative;
+  overflow: hidden;
+}
+.glowing-card::before {
+  content: '';
+  position: absolute;
+  width: 120px;
+  height: 150%;
+  background: linear-gradient(to right, transparent, #8b5cf6, #3b82f6, transparent);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation: aurora-spin 5s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+.glowing-card:hover::before {
+  opacity: 0.3; /* होवर पर ग्लो दिखाएं */
+}
+.glowing-card-content {
+  position: relative;
+  z-index: 1;
+  background-color: #1e293b; /* slate-800 */
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+@layer utilities {
+  /* Aurora Glow */
+  @keyframes aurora-pulse {
+    0%, 100% {
+      transform: translateY(0) scale(1);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translateY(-20px) scale(1.05);
+      opacity: 1;
+    }
+  }
+
+  @keyframes floatUpDown {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+
+  @keyframes slow-orbit {
+    0% {
+      transform: rotate(0deg) translateX(0px);
+    }
+    100% {
+      transform: rotate(360deg) translateX(0px);
+    }
+  }
+
+  .animate-aurora {
+    animation: aurora-pulse 6s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: floatUpDown 4s ease-in-out infinite;
+  }
+
+  .animate-orbit {
+    animation: slow-orbit 60s linear infinite;
+  }
+
+  .blur-glow {
+    filter: blur(80px) brightness(120%);
+  }
+}
+
+
+
+@layer utilities {
+  .blur-glow {
+    filter: blur(100px);
+  }
+}
+
+@keyframes aurora {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+  50% { transform: translate(40px, 60px) scale(1.2); opacity: 0.6; }
+  100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+}
+
+@keyframes orbit {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  50% { transform: translate(-30px, 20px) rotate(180deg) scale(1.1); }
+  100% { transform: translate(0, 0) rotate(360deg) scale(1); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-aurora {
+  animation: aurora 12s ease-in-out infinite;
+}
+.animate-orbit {
+  animation: orbit 18s linear infinite;
+}
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+/* सर्विस कार्ड के लिए */
+.service-card {
+  position: relative;
+  background-color: #1e293b; /* slate-800 */
+  border: 1px solid #334155; /* slate-700 */
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* माउस-ट्रैकिंग स्पॉटलाइट */
+.service-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle 200px at var(--x, 50%) var(--y, 50%),
+    rgba(147, 112, 219, 0.15), /* purple-500 with opacity */
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.service-card:hover::before {
+  opacity: 1;
+}
+
+/* एनिमेटेड ग्रेडिएंट बॉर्डर */
+.service-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px; /* बॉर्डर की चौड़ाई */
+  background: conic-gradient(from var(--angle, 0deg), #3b82f6, #8b5cf6, #ec4899, #8b5cf6, #3b82f6);
+  z-index: -1;
+  animation: spin-border 4s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.service-card:hover::after {
+  opacity: 1;
+}
+
+@keyframes spin-border {
+  from { --angle: 0deg; }
+  to { --angle: 360deg; }
+}
+
+@layer utilities {
+  @keyframes aurora-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+
+  @keyframes floatUpDown {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @keyframes orbitRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes glow-text {
+    0%, 100% { text-shadow: 0 0 12px #a78bfa, 0 0 24px #7c3aed; }
+    50% { text-shadow: 0 0 24px #a78bfa, 0 0 40px #7c3aed; }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes stars {
+    from { background-position: 0 0; }
+    to { background-position: 1000px 1000px; }
+  }
+
+  .animate-aurora {
+    animation: aurora-pulse 6s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: floatUpDown 5s ease-in-out infinite;
+  }
+
+  .animate-orbit {
+    animation: orbitRotate 60s linear infinite;
+  }
+
+  .animate-glow-text {
+    animation: glow-text 4s ease-in-out infinite;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 1.5s ease-out forwards;
+  }
+
+  .animate-stars {
+    animation: stars 120s linear infinite;
+  }
+
+  .blur-glow {
+    filter: blur(100px) brightness(130%);
+  }
+}

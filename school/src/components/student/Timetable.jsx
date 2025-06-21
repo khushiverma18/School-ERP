@@ -1,10 +1,62 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, Clock, BookOpen, Users, MapPin, Bell, ChevronRight, AlarmClock } from "lucide-react";
+import { Calendar, Clock, Coffee, BookOpen, Users, MapPin, Bell, ChevronRight, AlarmClock } from "lucide-react";
 import { ChevronLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from 'framer-motion';
 
+
+// Helper to get a consistent color for subjects
+// You can expand this with more subjects
+const getSubjectColor = (subject = "") => {
+  switch (subject.toLowerCase()) {
+    case 'math': return 'border-blue-400';
+    case 'english': return 'border-rose-400';
+    case 'physics': return 'border-indigo-400';
+    case 'chemistry': return 'border-amber-400';
+    case 'biology': return 'border-emerald-400';
+    default: return 'border-slate-300';
+  }
+};
+
+// --- DUMMY DATA FOR DEMONSTRATION ---
+// In your app, this would come from your context or props
+const classSchedule = [
+  { day: 'Monday', classes: [ { time: '08:00 - 08:45', subject: 'Math', teacher: 'Mr. Davison' }, { time: '08:45 - 09:30', subject: 'English', teacher: 'Ms. Poem' }, { time: '09:30 - 10:15', subject: 'Physics', teacher: 'Dr. Volt' } ] },
+  { day: 'Tuesday', classes: [ /* ... */ ] },
+  { day: 'Wednesday', classes: [ /* ... */ ] },
+  { day: 'Thursday', classes: [ /* ... */ ] },
+  { day: 'Friday', classes: [ /* ... */ ] },
+  { day: 'Saturday', classes: [] }, // Example of a day with no classes
+  { day: 'Sunday', classes: [] },   // Example of a day with no classes
+];
+// ------------------------------------
+
+// Animation Variants
+const listVariants = {
+  visible: {
+    opacity: 1,
+    transition: {
+      when: "beforeChildren",
+      staggerChildren: 0.1,
+    },
+  },
+  hidden: {
+    opacity: 0,
+  },
+};
+
+const itemVariants = {
+  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } },
+  hidden: { opacity: 0, y: 20 },
+};
+
+const emptyStateVariants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: "easeOut" } },
+  exit: { opacity: 0, scale: 0.95 }
+}
 export function StudentTimetable({ isOpen, toggleSidebar }) {
   const classSchedule = [
     { day: "Monday", classes: [
@@ -95,6 +147,13 @@ export function StudentTimetable({ isOpen, toggleSidebar }) {
   const adjustedDayIndex = currentDayIndex === 0 ? 6 : currentDayIndex - 1;
   const currentDaySchedule = classSchedule[adjustedDayIndex]?.classes || [];
 
+
+   const today = new Date();
+  // (today.getDay() + 6) % 7 makes Monday = 0, Tuesday = 1, ..., Sunday = 6
+  const adjustedDay = (today.getDay() + 6) % 7; 
+  const todaysSchedule = classSchedule[adjustedDay];
+  const hasClasses = todaysSchedule && todaysSchedule.classes.length > 0;
+
   return (
     <div className="p-6 space-y-6 bg-gradient-to-br from-purple-50 via-indigo-50 to-pink-50 min-h-screen ">
       <div className="flex items-center gap-4">
@@ -113,58 +172,65 @@ export function StudentTimetable({ isOpen, toggleSidebar }) {
       </div>
 
       {/* Today's Classes Section */}
-      <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-gray-100">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold flex items-center gap-2">
-            <AlarmClock className="text-purple-600 h-5 w-5" />
-            Today's Classes
-          </h2>
-          <Badge variant="outline" className="bg-purple-50 text-purple-600 border-purple-200">
-            {classSchedule[adjustedDayIndex]?.day || "No classes today"}
-          </Badge>
-        </div>
-        
-        {currentDaySchedule.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {currentDaySchedule.map((classItem, index) => (
-              <div
-                key={index}
-                className={`p-4 rounded-lg border-l-4 ${
-                  classItem.type === 'break' 
-                    ? 'bg-gray-50 border-gray-300' 
-                    : getSubjectColor(classItem.subject)
-                } transition-all duration-200 hover:shadow-md flex flex-col`}
-              >
-                <div className="flex justify-between items-start mb-2">
-                  <Badge variant="outline" className="text-xs bg-white/80">
-                    {classItem.time}
-                  </Badge>
-                  {classItem.type !== 'break' && (
-                    <Badge variant="outline" className="text-xs bg-white/80">
-                      {classItem.type === 'regular' ? 'Class' : classItem.type}
-                    </Badge>
-                  )}
-                </div>
-                <h4 className="font-semibold text-gray-800 mb-2">{classItem.subject}</h4>
-                {classItem.teacher && (
-                  <p className="text-sm text-gray-600 mb-1 flex items-center gap-1">
-                    <Users className="h-3 w-3" /> {classItem.teacher}
-                  </p>
-                )}
-                {classItem.room && (
-                  <p className="text-sm text-gray-600 flex items-center gap-1">
-                    <MapPin className="h-3 w-3" /> {classItem.room}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-8 text-gray-500">
-            No classes scheduled for today
-          </div>
-        )}
+      <div className="bg-purple-50/60 backdrop-blur-xl rounded-2xl shadow-lg p-6 border border-purple-200/30">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2.5">
+          <AlarmClock className="text-purple-600 h-6 w-6" />
+          Today's Schedule
+        </h2>
+        <Badge variant="outline" className="bg-purple-100 text-purple-700 border-purple-200 font-semibold px-3 py-1">
+          {todaysSchedule?.day || "Weekend"}
+        </Badge>
       </div>
+
+      <AnimatePresence mode="wait">
+        {hasClasses ? (
+          // --- STATE WITH CLASSES ---
+          <motion.ul
+            key="class-list"
+            className="space-y-3"
+            variants={listVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+          >
+            {todaysSchedule.classes.map((item, index) => (
+              <motion.li
+                key={index}
+                variants={itemVariants}
+                className={`flex items-center gap-4 p-3 bg-white/70 rounded-lg border-l-4 ${getSubjectColor(item.subject)}`}
+              >
+                <div className="text-left">
+                  <p className="font-semibold text-slate-800">{item.subject}</p>
+                  <p className="text-sm text-slate-500">{item.teacher}</p>
+                </div>
+                <div className="ml-auto text-right text-sm font-medium text-purple-700">
+                  {item.time}
+                </div>
+              </motion.li>
+            ))}
+          </motion.ul>
+        ) : (
+          // --- EMPTY STATE WHEN THERE ARE NO CLASSES ---
+          <motion.div
+            key="no-classes"
+            variants={emptyStateVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="flex flex-col items-center justify-center text-center py-8"
+          >
+            <div className="flex items-center justify-center h-16 w-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full mb-4">
+              <Coffee className="h-8 w-8 text-purple-600" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-800">Time to Recharge!</h3>
+            <p className="text-slate-500 mt-1 max-w-xs">
+              There are no classes scheduled for today. Enjoy your break!
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
 
       <Tabs defaultValue="class-schedule" className="w-full">
         <TabsList className="grid w-full grid-cols-2 mb-6 bg-white/80 backdrop-blur-sm">

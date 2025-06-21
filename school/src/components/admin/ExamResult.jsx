@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { GraduationCap, FileText, TrendingUp, Award } from 'lucide-react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 
 const ExamResults = () => {
   const [selectedExam, setSelectedExam] = useState('mid-term-2024');
@@ -19,12 +18,36 @@ const ExamResults = () => {
     { subject: 'Science', average: 88.1, highest: 98, lowest: 72, passRate: 98 },
   ];
 
+  const classAverage = (
+    examResults.reduce((acc, curr) => acc + curr.total, 0) / (examResults.length * 3)
+  ).toFixed(1);
+
+  const topScore = Math.max(...examResults.map(r => r.total));
+  const topScorePercent = ((topScore / 300) * 100).toFixed(0);
+
+  const isPass = (student) =>
+    student.math >= 35 && student.english >= 35 && student.science >= 35;
+
+  const passRate = (
+    (examResults.filter(isPass).length / examResults.length) * 100
+  ).toFixed(0);
+
+  const getGradeStyle = (grade) => {
+    switch (grade) {
+      case 'A+': return 'bg-green-100 text-green-800';
+      case 'A': return 'bg-blue-100 text-blue-800';
+      case 'B+': return 'bg-yellow-100 text-yellow-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
+      {/* Header */}
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Exam Results</h2>
-          <p className="text-gray-600">View and manage examination results</p>
+          <p className="text-gray-900">View and manage examination results</p>
         </div>
         <div className="flex space-x-3">
           <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2">
@@ -38,7 +61,7 @@ const ExamResults = () => {
         </div>
       </div>
 
-      {/* Controls */}
+      {/* Filters */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -46,7 +69,7 @@ const ExamResults = () => {
             <select
               value={selectedExam}
               onChange={(e) => setSelectedExam(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500"
             >
               <option value="mid-term-2024">Mid-Term 2024</option>
               <option value="final-2024">Final Exam 2024</option>
@@ -58,7 +81,7 @@ const ExamResults = () => {
             <select
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500"
             >
               <option value="10-A">Grade 10-A</option>
               <option value="10-B">Grade 10-B</option>
@@ -69,128 +92,107 @@ const ExamResults = () => {
         </div>
       </div>
 
-      {/* Class Performance Overview */}
+      {/* Analytics Summary */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center">
-            <TrendingUp className="h-8 w-8 text-blue-600" />
+        {[
+          { label: 'Class Average', value: `${classAverage}%`, icon: <TrendingUp className="h-8 w-8 text-blue-600" /> },
+          { label: 'Top Score', value: `${topScorePercent}%`, icon: <Award className="h-8 w-8 text-green-600" /> },
+          { label: 'Pass Rate', value: `${passRate}%`, icon: <GraduationCap className="h-8 w-8 text-purple-600" /> },
+          { label: 'Total Students', value: examResults.length, icon: <FileText className="h-8 w-8 text-orange-600" /> }
+        ].map((stat, index) => (
+          <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 flex items-center">
+            {stat.icon}
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Class Average</p>
-              <p className="text-2xl font-bold text-gray-900">84.4%</p>
+              <p className="text-sm font-medium text-gray-500">{stat.label}</p>
+              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
             </div>
           </div>
-        </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center">
-            <Award className="h-8 w-8 text-green-600" />
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Top Score</p>
-              <p className="text-2xl font-bold text-gray-900">98%</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center">
-            <GraduationCap className="h-8 w-8 text-purple-600" />
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Pass Rate</p>
-              <p className="text-2xl font-bold text-gray-900">95%</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center">
-            <FileText className="h-8 w-8 text-orange-600" />
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Total Students</p>
-              <p className="text-2xl font-bold text-gray-900">30</p>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
 
-      {/* Student Results */}
+      {/* Student Result Table */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
         <div className="px-6 py-4 border-b border-gray-200">
           <h3 className="text-lg font-semibold text-gray-900">Student Results - {selectedClass}</h3>
         </div>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Roll No</TableHead>
-              <TableHead>Student Name</TableHead>
-              <TableHead>Math</TableHead>
-              <TableHead>English</TableHead>
-              <TableHead>Science</TableHead>
-              <TableHead>Total</TableHead>
-              <TableHead>Grade</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {examResults.map((result) => (
-              <TableRow key={result.id}>
-                <TableCell>{result.rollNo}</TableCell>
-                <TableCell className="font-medium">{result.name}</TableCell>
-                <TableCell>{result.math}</TableCell>
-                <TableCell>{result.english}</TableCell>
-                <TableCell>{result.science}</TableCell>
-                <TableCell className="font-bold">{result.total}</TableCell>
-                <TableCell>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    result.grade === 'A+' ? 'bg-green-100 text-green-800' :
-                    result.grade === 'A' ? 'bg-blue-100 text-blue-800' :
-                    'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    {result.grade}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <div className="flex space-x-2">
-                    <button className="text-indigo-600 hover:text-indigo-900 text-sm">Edit</button>
-                    <button className="text-green-600 hover:text-green-900 text-sm">Report Card</button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200 text-sm">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left font-medium text-gray-500">Roll No</th>
+                <th className="px-6 py-3 text-left font-medium text-gray-500">Student Name</th>
+                <th className="px-6 py-3 text-left font-medium text-gray-500">Math</th>
+                <th className="px-6 py-3 text-left font-medium text-gray-500">English</th>
+                <th className="px-6 py-3 text-left font-medium text-gray-500">Science</th>
+                <th className="px-6 py-3 text-left font-medium text-gray-500">Total</th>
+                <th className="px-6 py-3 text-left font-medium text-gray-500">Grade</th>
+                <th className="px-6 py-3 text-left font-medium text-gray-500">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {examResults.map((result) => (
+                <tr key={result.id}>
+                  <td className="px-6 py-4">{result.rollNo}</td>
+                  <td className="px-6 py-4 font-medium">{result.name}</td>
+                  <td className="px-6 py-4">{result.math}</td>
+                  <td className="px-6 py-4">{result.english}</td>
+                  <td className="px-6 py-4">{result.science}</td>
+                  <td className="px-6 py-4 font-bold">{result.total}</td>
+                  <td className="px-6 py-4">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getGradeStyle(result.grade)}`}>
+                      {result.grade}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 space-x-2">
+                    <button className="text-indigo-600 hover:underline">Edit</button>
+                    <button className="text-green-600 hover:underline">Report Card</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {/* Subject-wise Analytics */}
+      {/* Subject-Wise Analytics */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
         <div className="px-6 py-4 border-b border-gray-200">
           <h3 className="text-lg font-semibold text-gray-900">Subject-wise Analytics</h3>
         </div>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Subject</TableHead>
-              <TableHead>Class Average</TableHead>
-              <TableHead>Highest Score</TableHead>
-              <TableHead>Lowest Score</TableHead>
-              <TableHead>Pass Rate</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {classAnalytics.map((analytics) => (
-              <TableRow key={analytics.subject}>
-                <TableCell className="font-medium">{analytics.subject}</TableCell>
-                <TableCell>{analytics.average}%</TableCell>
-                <TableCell className="text-green-600">{analytics.highest}</TableCell>
-                <TableCell className="text-red-600">{analytics.lowest}</TableCell>
-                <TableCell>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-16 bg-gray-200 rounded-full h-2">
-                      <div className="bg-green-500 h-2 rounded-full" style={{width: `${analytics.passRate}%`}}></div>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200 text-sm">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left font-medium text-gray-500">Subject</th>
+                <th className="px-6 py-3 text-left font-medium text-gray-500">Class Average</th>
+                <th className="px-6 py-3 text-left font-medium text-gray-500">Highest</th>
+                <th className="px-6 py-3 text-left font-medium text-gray-500">Lowest</th>
+                <th className="px-6 py-3 text-left font-medium text-gray-500">Pass Rate</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {classAnalytics.map((analytics) => (
+                <tr key={analytics.subject}>
+                  <td className="px-6 py-4 font-medium">{analytics.subject}</td>
+                  <td className="px-6 py-4">{analytics.average}%</td>
+                  <td className="px-6 py-4 text-green-600">{analytics.highest}</td>
+                  <td className="px-6 py-4 text-red-600">{analytics.lowest}</td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-16 bg-gray-200 rounded-full h-2">
+                        <div
+                          className="bg-green-500 h-2 rounded-full"
+                          style={{ width: `${analytics.passRate}%` }}
+                        ></div>
+                      </div>
+                      <span>{analytics.passRate}%</span>
                     </div>
-                    <span className="text-sm font-medium">{analytics.passRate}%</span>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
