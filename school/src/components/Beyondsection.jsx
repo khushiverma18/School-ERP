@@ -92,7 +92,7 @@ const BeyondSection = () => {
             </span>
           </h2>
           <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed opacity-90">
-            Traditional school software focuses on managing tasks. Pragyan AI helps you build a connected, intelligent, future-ready institution.
+            Traditional University/Collages software focuses on managing tasks. Pragyan AI helps you build a connected, intelligent, future-ready institution.
           </p>
         </motion.div>
 

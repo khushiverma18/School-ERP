@@ -71,7 +71,6 @@ const ItemCard = ({ item, onAddToCart }) => {
             <FiChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400" />
           </div>
         ) : (
-          // यदि साइज़ नहीं है तो जगह भरने के लिए एक खाली div
           <div className="h-[50px]"></div>
         )}
          <motion.button
@@ -376,7 +375,7 @@ const UniformDeliveryModule = () => {
   </h1>
 
   <p className="mt-4 text-center text-lg text-white/80 font-medium">
-    Shop school uniforms, accessories, books & more — all in one place!
+    Shop Institute uniforms, accessories, books & more — all in one place!
   </p>
 </div>
 

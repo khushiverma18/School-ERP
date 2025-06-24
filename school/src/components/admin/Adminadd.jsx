@@ -78,7 +78,7 @@ const AdminPanel = () => {
               <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent mb-2">
                 Admin Dashboard
               </h1>
-              <p className="text-slate-600 text-lg">Welcome back! Here's what's happening at your school today.</p>
+              <p className="text-slate-600 text-lg">Welcome back! Here's what's happening at your Institute today.</p>
             </div>
             <Badge variant="secondary" className="hidden sm:flex items-center gap-2 px-4 py-2">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
@@ -121,7 +121,7 @@ const AdminPanel = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-12"
         >
-          <h2 className="text-xl font-semibold text-slate-700 mb-6">School Overview</h2>
+          <h2 className="text-xl font-semibold text-slate-700 mb-6">Institute Overview</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {stats.map((item, index) => (
               <motion.div
@@ -164,7 +164,7 @@ const AdminPanel = () => {
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-slate-800 mb-2"> Feature Modules</h2>
             <p className="text-slate-600 max-w-2xl mx-auto">
-              Access all the tools you need to manage your school efficiently
+              Access all the tools you need to manage your Institute efficiently
             </p>
           </div>
 

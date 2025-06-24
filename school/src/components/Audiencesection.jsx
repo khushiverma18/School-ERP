@@ -71,7 +71,7 @@ const AudienceSection = () => {
             One Platform. <span className="bg-gradient-to-r from-cyan-400 to-indigo-500 bg-clip-text text-transparent">Every Institution.</span>
           </h2>
           <p className="text-lg text-slate-300 max-w-3xl mx-auto">
-            Our versatile system is designed to meet the unique needs of every educational environment, from local schools to global online platforms.
+            Our versatile system is designed to meet the unique needs of every educational environment, from local University/Collages to global online platforms.
           </p>
         </div>
 

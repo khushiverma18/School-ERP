@@ -66,7 +66,7 @@ const tasksData = [
 
   const updates = [
     { text: 'Complete the class 12 syllabus in 3 months', icon: <ListCollapse className="w-4 h-4 mr-3 text-cyan-400" /> },
-    { text: 'School organized quiz on 17th', icon: <School className="w-4 h-4 mr-3 text-amber-400" /> },
+    { text: 'Institute organized quiz on 17th', icon: <School className="w-4 h-4 mr-3 text-amber-400" /> },
     { text: 'Volleyball tournament on 25th', icon: <Trophy className="w-4 h-4 mr-3 text-lime-400" /> },
     { text: 'New practice papers available for Physics', icon: <ListCollapse className="w-4 h-4 mr-3 text-cyan-400" /> },
     { text: 'Submit science projects by Friday', icon: <School className="w-4 h-4 mr-3 text-amber-400" /> },
@@ -188,7 +188,7 @@ const Dashboard = () => {
 
           {/* School Performance */}
           <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
-            <CardHeader><CardTitle className="text-white">School Performance</CardTitle><div className="flex space-x-4 text-sm"><span className="text-slate-400">This Year</span><span className="text-slate-400">Last Year</span></div></CardHeader>
+            <CardHeader><CardTitle className="text-white"> Institute Performance</CardTitle><div className="flex space-x-4 text-sm"><span className="text-slate-400">This Year</span><span className="text-slate-400">Last Year</span></div></CardHeader>
             <CardContent>
               <div className="space-y-4"><div><div className="flex justify-between items-center mb-2"><span className="text-sm text-slate-300">RESULT</span><span className="text-sm text-white">85%</span></div><div className="w-full bg-slate-700 rounded-full h-2"><div className="bg-blue-500 h-2 rounded-full" style={{ width: '85%' }}></div></div></div><div><div className="flex justify-between items-center mb-2"><span className="text-sm text-slate-300">Sports</span><span className="text-sm text-white">75%</span></div><div className="w-full bg-slate-700 rounded-full h-2"><div className="bg-emerald-500 h-2 rounded-full" style={{ width: '75%' }}></div></div></div></div>
             </CardContent>

@@ -24,7 +24,7 @@ const features = [
   {
     icon: Zap,
     title: "Instant Updates",
-    description: "Keep your entire school community connected and informed in real-time.",
+    description: "Keep your entire University/Collages connected and informed in real-time.",
     color: "#facc15", // Yellow
   },
   {
