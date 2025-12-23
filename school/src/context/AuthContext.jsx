@@ -10,8 +10,8 @@ export function AuthProvider({ children }) {
     const mockUsers = [
       { name: "admin", email: "admin@gmail.com", password: "admin@123", role: "admin" },
       { name: "khushi", email: "khushi@gmail.com", password: "khushi@123", role: "student" },
-      { name: "rahul", email: "rahul@gmail.com", password: "rahul@123", role: "teacher" },
-      { name: "renu", email: "renu@gmail.com", password: "renu@123", role: "parent" }
+      { name: "teacher", email: "teacher@gmail.com", password: "teacher@123", role: "teacher" },
+      { name: "parent", email: "parent@gmail.com", password: "parent@123", role: "parent" }
     ];
 
     const foundUser = mockUsers.find(user => 
