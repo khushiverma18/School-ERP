@@ -66,7 +66,7 @@ const WhySection = () => {
             </span>
           </h2>
           <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed opacity-90">
-            Pragyan AI is built to impress simplifying daily University/Collages operations while elevating learning, connection, and growth.
+            Pragyan AI is built to impress simplifying daily School operations while elevating learning, connection, and growth.
           </p>
         </div>
 
